@@ -50,13 +50,17 @@
 Name:           ffmpeg
 
 Version:        4.3.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A complete solution to record, convert and stream audio and video
 License:        GPLv3+
 URL:            https://ffmpeg.org/
 Source0:        {{{ git_dir_pack }}}
 
 Patch0:         ffmpeg-allow-fdk-aac-free.patch
+Patch1:         avcodec-arm-sbcenc-avoid-callee-preserved-vfp-regist.patch
+Patch2:         avcodec-pngenc-remove-monowhite-from-apng-formats.patch
+Patch3:         ffmpeg-4.3.4-rpi_14.patch
+Patch4:         fix_flags.diff
 
 Requires:       libavcodec%{?pkg_suffix}%{_isa} = %{version}-%{release}
 Requires:       libavdevice%{?pkg_suffix}%{_isa} = %{version}-%{release}
@@ -116,6 +120,7 @@ BuildRequires:  pkgconfig(libopenmpt)
 BuildRequires:  pkgconfig(libpulse)
 BuildRequires:  pkgconfig(librsvg-2.0)
 BuildRequires:  pkgconfig(libssh)
+BuildRequires:  pkgconfig(libudev)
 BuildRequires:  pkgconfig(libv4l2)
 BuildRequires:  pkgconfig(libva)
 BuildRequires:  pkgconfig(libva-drm)
@@ -447,6 +452,10 @@ This subpackage contains the headers for FFmpeg libswscale.
 %prep
 {{{ git_dir_setup_macro }}}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
 # fix -O3 -g in host_cflags
 sed -i "s|check_host_cflags -O3|check_host_cflags %{optflags}|" configure
 install -m0755 -d _doc/examples
@@ -474,6 +483,7 @@ cp -a doc/examples/{*.c,Makefile,README} _doc/examples/
     --disable-static \
     --enable-gpl \
     --enable-version3 \
+    --enable-v4l2-request \
     --enable-libsmbclient \
     --disable-openssl \
     --enable-bzlib \
@@ -726,5 +736,9 @@ rm -rf %{buildroot}%{_datadir}/%{name}/examples
 %{_mandir}/man3/libswscale.3*
 
 %changelog
+* Mon Aug 22 2022 Luca Magrone <luca@magrone.cc> - 4.3.4-2
+- Add RPi-Distro patches for Raspberry Pi
+- Enable v4l2-request
+
 * Mon Aug 22 2022 Luca Magrone <luca@magrone.cc> - 4.3.4-1
 - Initial package build
