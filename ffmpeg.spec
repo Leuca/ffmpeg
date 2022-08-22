@@ -61,6 +61,7 @@ Patch1:         avcodec-arm-sbcenc-avoid-callee-preserved-vfp-regist.patch
 Patch2:         avcodec-pngenc-remove-monowhite-from-apng-formats.patch
 Patch3:         ffmpeg-4.3.4-rpi_14.patch
 Patch4:         fix_flags.diff
+Patch5:         fix_missing_string_h.patch
 
 Requires:       libavcodec%{?pkg_suffix}%{_isa} = %{version}-%{release}
 Requires:       libavdevice%{?pkg_suffix}%{_isa} = %{version}-%{release}
@@ -456,6 +457,7 @@ This subpackage contains the headers for FFmpeg libswscale.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 # fix -O3 -g in host_cflags
 sed -i "s|check_host_cflags -O3|check_host_cflags %{optflags}|" configure
 install -m0755 -d _doc/examples

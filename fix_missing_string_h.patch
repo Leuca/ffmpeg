@@ -1,0 +1,12 @@
+diff --git a/libavcodec/v4l2_req_decode_q.c b/libavcodec/v4l2_req_decode_q.c
+index 5b3fb958..d68bed51 100644
+--- a/libavcodec/v4l2_req_decode_q.c
++++ b/libavcodec/v4l2_req_decode_q.c
+@@ -1,6 +1,7 @@
+ #include <memory.h>
+ #include <semaphore.h>
+ #include <pthread.h>
++#include <string.h>
+ 
+ #include "v4l2_req_decode_q.h"
+ 
