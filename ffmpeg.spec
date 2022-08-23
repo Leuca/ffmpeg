@@ -50,7 +50,7 @@
 Name:           ffmpeg
 
 Version:        4.3.4
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        A complete solution to record, convert and stream audio and video
 License:        GPLv3+
 URL:            https://ffmpeg.org/
@@ -62,6 +62,7 @@ Patch2:         avcodec-pngenc-remove-monowhite-from-apng-formats.patch
 Patch3:         ffmpeg-4.3.4-rpi_14.patch
 Patch4:         fix_flags.diff
 Patch5:         fix_missing_string_h.patch
+Patch6:         fix_flags_l4rpi.patch
 
 Requires:       libavcodec%{?pkg_suffix}%{_isa} = %{version}-%{release}
 Requires:       libavdevice%{?pkg_suffix}%{_isa} = %{version}-%{release}
@@ -88,6 +89,7 @@ BuildRequires:  libgcrypt-devel
 BuildRequires:  libmysofa-devel
 BuildRequires:  make
 BuildRequires:  nasm
+BuildRequires:  rpi-userland-devel
 BuildRequires:  perl(Pod::Man)
 BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(aom)
@@ -458,6 +460,7 @@ This subpackage contains the headers for FFmpeg libswscale.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 # fix -O3 -g in host_cflags
 sed -i "s|check_host_cflags -O3|check_host_cflags %{optflags}|" configure
 install -m0755 -d _doc/examples
@@ -740,6 +743,9 @@ rm -rf %{buildroot}%{_datadir}/%{name}/examples
 %{_mandir}/man3/libswscale.3*
 
 %changelog
+* Mon Aug 22 2022 Luca Magrone <luca@magrone.cc> - 4.3.4-4
+- Make use of rpi-userland libraries to compile with rpi
+
 * Mon Aug 22 2022 Luca Magrone <luca@magrone.cc> - 4.3.4-3
 - Enable sand and rpi
 
