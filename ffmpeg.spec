@@ -3,6 +3,9 @@
 # by disabling certain optional dependencies.
 %bcond_without bootstrap
 
+# Optionally build with rpi patches
+%bcond_with rpi
+
 # Fails due to asm issue
 %ifarch %{ix86} %{arm}
 %bcond_with lto
@@ -50,7 +53,7 @@
 Name:           ffmpeg
 
 Version:        4.3.4
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        A complete solution to record, convert and stream audio and video
 License:        GPLv3+
 URL:            https://ffmpeg.org/
@@ -113,7 +116,9 @@ BuildRequires:  pkgconfig(libcdio_paranoia)
 %if %{without bootstrap}
 BuildRequires:  pkgconfig(libchromaprint)
 %endif
+%if %{with rpi}
 BuildRequires:  pkgconfig(libdrm)
+%endif
 BuildRequires:  pkgconfig(libmodplug)
 BuildRequires:  pkgconfig(libomxil-bellagio)
 BuildRequires:  pkgconfig(libopenjp2)
@@ -455,9 +460,11 @@ This subpackage contains the headers for FFmpeg libswscale.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%if %{with rpi}
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%endif
 # fix -O3 -g in host_cflags
 sed -i "s|check_host_cflags -O3|check_host_cflags %{optflags}|" configure
 install -m0755 -d _doc/examples
@@ -482,11 +489,13 @@ cp -a doc/examples/{*.c,Makefile,README} _doc/examples/
     --enable-pic \
     --disable-stripping \
     --enable-shared \
-    --enable-sand \
     --disable-static \
     --enable-gpl \
     --enable-version3 \
+%if %{with rpi}
     --enable-v4l2-request \
+    --enable-sand \
+%endif
     --enable-libsmbclient \
     --disable-openssl \
     --enable-bzlib \
@@ -739,6 +748,9 @@ rm -rf %{buildroot}%{_datadir}/%{name}/examples
 %{_mandir}/man3/libswscale.3*
 
 %changelog
+* Tue Aug 23 2022 Luca Magrone <luca@magrone.cc> - 4.3.4-5
+- Optionally apply rpi patch
+
 * Tue Aug 23 2022 Luca Magrone <luca@magrone.cc> - 4.3.4-4
 - Disable rpi
 
