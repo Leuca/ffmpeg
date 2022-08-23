@@ -50,7 +50,7 @@
 Name:           ffmpeg
 
 Version:        4.3.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A complete solution to record, convert and stream audio and video
 License:        GPLv3+
 URL:            https://ffmpeg.org/
@@ -481,7 +481,9 @@ cp -a doc/examples/{*.c,Makefile,README} _doc/examples/
     --disable-htmlpages \
     --enable-pic \
     --disable-stripping \
+    --enable-rpi \
     --enable-shared \
+    --enable-sand \
     --disable-static \
     --enable-gpl \
     --enable-version3 \
@@ -738,6 +740,9 @@ rm -rf %{buildroot}%{_datadir}/%{name}/examples
 %{_mandir}/man3/libswscale.3*
 
 %changelog
+* Mon Aug 22 2022 Luca Magrone <luca@magrone.cc> - 4.3.4-3
+- Enable sand and rpi
+
 * Mon Aug 22 2022 Luca Magrone <luca@magrone.cc> - 4.3.4-2
 - Add RPi-Distro patches for Raspberry Pi
 - Enable v4l2-request
