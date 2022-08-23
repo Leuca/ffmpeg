@@ -116,9 +116,7 @@ BuildRequires:  pkgconfig(libcdio_paranoia)
 %if %{without bootstrap}
 BuildRequires:  pkgconfig(libchromaprint)
 %endif
-%if %{with rpi}
 BuildRequires:  pkgconfig(libdrm)
-%endif
 BuildRequires:  pkgconfig(libmodplug)
 BuildRequires:  pkgconfig(libomxil-bellagio)
 BuildRequires:  pkgconfig(libopenjp2)
